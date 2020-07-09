@@ -22,6 +22,10 @@ class HashTable:
 
     def __init__(self, capacity):
         # Your code here
+        self.capacity = capacity
+        self.hash_list = [None] * capacity
+        self.FNV_offset_basis = 14695981039346656037
+        self.FNV_prime = 1099511628211
 
 
     def get_num_slots(self):
@@ -34,6 +38,8 @@ class HashTable:
 
         Implement this.
         """
+
+        return len(self.has_list)
         # Your code here
 
 
@@ -52,7 +58,19 @@ class HashTable:
 
         Implement this, and/or DJB2.
         """
+        hash_var = self.FNV_offset_basis
 
+        for byte_of_data in key.encode():
+            temp_str = ''
+            hash_var = hash_var * self.FNV_prime
+            hash_set = set(str(hash_var))
+            byte_set = set(str(byte_of_data))
+            for val in hash_set.difference(byte_set):
+                temp_str += val
+
+            hash_var = int(temp_str)
+        
+        return hash_var
         # Your code here
 
 
@@ -70,17 +88,18 @@ class HashTable:
         Take an arbitrary key and return a valid integer index
         between within the storage capacity of the hash table.
         """
-        #return self.fnv1(key) % self.capacity
-        return self.djb2(key) % self.capacity
+        return self.fnv1(key) % self.capacity
+        # return self.djb2(key) % self.capacity
 
     def put(self, key, value):
         """
         Store the value with the given key.
-
         Hash collisions should be handled with Linked List Chaining.
 
         Implement this.
         """
+        self.hash_list[self.hash_index(key)] = value
+
         # Your code here
 
 
@@ -92,6 +111,10 @@ class HashTable:
 
         Implement this.
         """
+        if self.hash_index(key) > self.capacity:
+            print('key not found')
+        else:
+            self.hash_list[self.hash_index(key)] = None
         # Your code here
 
 
@@ -103,6 +126,7 @@ class HashTable:
 
         Implement this.
         """
+        return self.hash_list[self.hash_index(key)]
         # Your code here
 
 
