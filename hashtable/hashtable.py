@@ -26,6 +26,7 @@ class HashTable:
         self.hash_list = [None] * capacity
         self.FNV_offset_basis = 14695981039346656037
         self.FNV_prime = 1099511628211
+        self.num_items = 0
 
 
     def get_num_slots(self):
@@ -49,6 +50,8 @@ class HashTable:
 
         Implement this.
         """
+
+        return self.num_items / self.capacity
         # Your code here
 
 
@@ -115,6 +118,9 @@ class HashTable:
                     current_item = current_item.next
             
             previous_item.next = new_hash_entry
+            self.num_items += 1
+
+            # if self.get_load_factor() > 
 
 
 
@@ -151,12 +157,6 @@ class HashTable:
                 if not found:
                     print('key does not exist')
 
-        # if self.hash_index(key) > self.capacity:
-        #     print('key not found')
-        # else:
-        #     self.hash_list[self.hash_index(key)] = None
-        # Your code here
-
 
     def get(self, key):
         """
@@ -185,6 +185,7 @@ class HashTable:
 
         Implement this.
         """
+        self.capacity
         # Your code here
 
 
