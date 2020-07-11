@@ -98,7 +98,23 @@ class HashTable:
 
         Implement this.
         """
-        self.hash_list[self.hash_index(key)] = value
+        new_hash_entry = HashTableEntry(key, value)
+        
+        if self.hash_list[self.hash_index(key)] is None:
+            self.hash_list[self.hash_index(key)] = new_hash_entry
+        else:
+            current_item = self.hash_list[self.hash_index(key)]
+
+            while current_item.next is not None:
+                if current_item.key == new_hash_entry.key:
+                    current_item.value = new_hash_entry.value
+                    return
+                else:
+                    current_item = current_item.next
+
+            current_item.next = new_hash_entry
+
+
 
         # Your code here
 
@@ -111,10 +127,32 @@ class HashTable:
 
         Implement this.
         """
-        if self.hash_index(key) > self.capacity:
-            print('key not found')
+
+        current_item = self.hash_list[self.hash_index(key)]
+        previous_item = None
+        found = False
+
+        if current_item is None:
+            print('key does not exist')
         else:
-            self.hash_list[self.hash_index(key)] = None
+            if current_item.key == key:
+                current_item.value = None
+            else:
+                while current_item is not None:
+                    if current_item.key == key:
+                        previous_item.next = current_item.next
+                        return
+                    else:
+                        previous_item = current_item
+                        current_item = current_item.next
+
+                if not found:
+                    print('key does not exist')
+
+        # if self.hash_index(key) > self.capacity:
+        #     print('key not found')
+        # else:
+        #     self.hash_list[self.hash_index(key)] = None
         # Your code here
 
 
@@ -126,7 +164,15 @@ class HashTable:
 
         Implement this.
         """
-        return self.hash_list[self.hash_index(key)]
+        retrieved_value = self.hash_list[self.hash_index(key)]
+
+        while retrieved_value is not None and retrieved_value.key != key:
+            retrieved_value = retrieved_value.next
+
+        if retrieved_value is None:
+            return None
+        else:
+            return retrieved_value.value
         # Your code here
 
 
