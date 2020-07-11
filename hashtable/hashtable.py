@@ -40,7 +40,7 @@ class HashTable:
         Implement this.
         """
 
-        return len(self.has_list)
+        return len(self.hash_list)
         # Your code here
 
 
@@ -120,7 +120,8 @@ class HashTable:
             previous_item.next = new_hash_entry
             self.num_items += 1
 
-            # if self.get_load_factor() > 
+            if self.get_load_factor() > 0.7:
+                self.resize(self.capacity * 2)
 
 
 
@@ -185,7 +186,22 @@ class HashTable:
 
         Implement this.
         """
-        self.capacity
+        old_capacity = self.get_num_slots()
+        self.capacity = new_capacity
+        temp_list = []
+
+        for current_item in self.hash_list:
+            temp_list.append(current_item)
+
+        self.hash_list = [None] * self.capacity
+
+        for current_item in temp_list:
+            while current_item is not None:
+                self.put(current_item.key, current_item.value)
+                current_item = current_item.next
+
+
+                
         # Your code here
 
 
